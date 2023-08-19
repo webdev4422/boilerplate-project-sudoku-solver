@@ -8,7 +8,13 @@ module.exports = function (app) {
   app.route('/api/check').post((req, res) => {})
 
   app.route('/api/solve').post((req, res) => {
-    console.log('OK')
+    let puzzleString = req.body.puzzle
+
+    puzzleString = solver.validate(puzzleString)
+    if (!puzzleString) {
+      return res.json({ error: 'Expected puzzle to be 81 characters long' })
+    }
+
     res.end()
   })
 }
