@@ -14,13 +14,6 @@ class SudokuSolver {
       }
     }
   }
-
-  checkRowPlacement(puzzleString, row, column, value) {}
-
-  checkColPlacement(puzzleString, row, column, value) {}
-
-  checkRegionPlacement(puzzleString, row, column, value) {}
-
   solve(puzzleString) {
     const puz = puzzleString.split('')
     const _board = []
@@ -97,6 +90,33 @@ class SudokuSolver {
     }
     return { solution: result }
   }
+
+  checkCoordinate(coordinate) {
+    const column = parseInt(coordinate[0].toUpperCase().charCodeAt(0)) - 65
+    const row = parseInt(coordinate.substring(1)) - 1
+
+    if (isNaN(row) || isNaN(column) || row < 0 || row > 8 || column < 0 || column > 8) {
+      return { error: 'Invalid coordinate' }
+    }
+    return { row, column }
+  }
+
+  checkValue(value) {
+    if (/^[1-9]$/.test(value) == false) {
+      return { error: 'Invalid value' }
+    }
+    return value
+  }
+
+  // if (!isValidValue(value)) {
+  //   return res.json({ error: 'Invalid value' });
+  // }
+
+  checkRowPlacement(puzzleString, row, column, value) {}
+
+  checkColPlacement(puzzleString, row, column, value) {}
+
+  checkRegionPlacement(puzzleString, row, column, value) {}
 }
 
 module.exports = SudokuSolver
