@@ -14,6 +14,7 @@ class SudokuSolver {
       }
     }
   }
+
   solve(puzzleString) {
     const puz = puzzleString.split('')
     const _board = []
