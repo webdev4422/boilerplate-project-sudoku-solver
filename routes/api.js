@@ -9,18 +9,19 @@ module.exports = function (app) {
 
   app.route('/api/solve').post((req, res) => {
     let puzzleString = req.body.puzzle
+    let result
 
+    // Check if valid
     puzzleString = solver.validate(puzzleString)
     if (puzzleString.error) {
       return res.json(puzzleString)
     }
 
-    puzzleString = solver.checkColPlacement(puzzleString)
-
-
-    // puzzleString = solver.checkRowPlacement(puzzleString)
-    // puzzleString = solver.checkRegionPlacement(puzzleString)
-
-    res.end()
+    // Check if can be solved with backtracking algorithm
+    result = solver.solve(puzzleString)
+    if (result.error) {
+      return res.json(result)
+    }
+    return res.json(result)
   })
 }
