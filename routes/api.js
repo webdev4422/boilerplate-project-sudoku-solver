@@ -11,9 +11,15 @@ module.exports = function (app) {
     let puzzleString = req.body.puzzle
 
     puzzleString = solver.validate(puzzleString)
-    if (!puzzleString) {
-      return res.json({ error: 'Expected puzzle to be 81 characters long' })
+    if (puzzleString.error) {
+      return res.json(puzzleString)
     }
+
+    puzzleString = solver.checkColPlacement(puzzleString)
+
+
+    // puzzleString = solver.checkRowPlacement(puzzleString)
+    // puzzleString = solver.checkRegionPlacement(puzzleString)
 
     res.end()
   })
