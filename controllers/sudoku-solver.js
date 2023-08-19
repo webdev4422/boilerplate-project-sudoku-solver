@@ -108,15 +108,59 @@ class SudokuSolver {
     return value
   }
 
-  // if (!isValidValue(value)) {
-  //   return res.json({ error: 'Invalid value' });
-  // }
-
   checkRowPlacement(puzzleString, row, column, value) {}
-
   checkColPlacement(puzzleString, row, column, value) {}
-
   checkRegionPlacement(puzzleString, row, column, value) {}
+
+  checkRowPlacement(puzzleString, row, column, value) {
+    const puzzle = this.convertToGrid(puzzleString)
+    const rowValues = puzzle[row]
+    if (!rowValues) {
+      throw new Error('Invalid row: ' + row)
+    }
+    return !rowValues.includes(parseInt(value))
+  }
+
+  checkColPlacement(puzzleString, row, column, value) {
+    const puzzle = this.convertToGrid(puzzleString)
+    const columnValues = puzzle.map((rowValues) => rowValues[column])
+    if (!columnValues) {
+      throw new Error('Invalid column: ' + column)
+    }
+    return !columnValues.includes(parseInt(value))
+  }
+
+  checkRegionPlacement(puzzleString, row, column, value) {
+    const puzzle = this.convertToGrid(puzzleString)
+    const regionRowStart = Math.floor(row / 3) * 3
+    const regionColStart = Math.floor(column / 3) * 3
+    for (let i = regionRowStart; i < regionRowStart + 3; i++) {
+      for (let j = regionColStart; j < regionColStart + 3; j++) {
+        if (puzzle[i][j] === parseInt(value)) {
+          return false
+        }
+      }
+    }
+    return true
+  }
+
+  convertToGrid(puzzleString) {
+    const grid = []
+    for (let i = 0; i < puzzleString.length; i += 9) {
+      const row = puzzleString
+        .slice(i, i + 9)
+        .split('')
+        .map((char) => {
+          if (char === '.') {
+            return null
+          } else {
+            return parseInt(char)
+          }
+        })
+      grid.push(row)
+    }
+    return grid
+  }
 }
 
 module.exports = SudokuSolver
